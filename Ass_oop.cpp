@@ -196,20 +196,6 @@ Image filter_8(Image& image) {
     }
     return result;
 }
-void filter_16(Image& image) {
-    for (int i = 0; i < image.width; i++) {
-        for (int j = 0; j < image.height; j++) {
-            unsigned int avg =0;
-            for (int k = 0; k < 3; k++) {
-                avg += image(i, j, k);
-            }
-            avg = avg / 3;
-            image(i, j, 0)=255;
-            image(i, j, 1)=avg;
-            image(i, j, 2)=avg;
-        }
-    }
-}
 int main() {
     cin >> z;
     if (z==0){
@@ -237,13 +223,6 @@ int main() {
         image.loadNewImage("Wano 2.jpg.jpg");
         Image resized = filter_8(image);
         resized.saveImage("Wano 2.jpg.png");
-        return 0;
-    }
-    else if (z==16) {
-        Image image;
-        image.loadNewImage("toy1.jpg.jpg");
-        filter_16(image);
-        image.saveImage("toy1.jpg.png");
         return 0;
     }
 }
