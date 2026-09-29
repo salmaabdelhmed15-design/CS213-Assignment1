@@ -307,18 +307,22 @@ int main() {
                 }
                 cout << "Invert Filter Applied Successfully!\n";
             }
-            else if (filter == 0) {
-                filter_4_2(img1);
-                cout << "Custom Frame Filter Applied Successfully!\n";
-            }
             else if (filter == 4) {
-                filter_4(img1);
+                  int choice;
+                cout << "1. Simple Frame\n";
+                cout << "2. Decorative Frame\n";
+                cout << "3. Both\n";
+                cout << "Enter choice: ";
+                cin >> choice;
+                if (choice == 1) {
+                    filter_4(img1);
+                }else if (choice == 2) {
+                    filter_4_2(img1);
+                }else {
+                    filter_4(img1);
+                    filter_4_2(img1);
+                }
                 cout << "Frame Applied Successfully!\n";
-            }
-            else if (filter == 40) {
-                filter_4(img1);
-                filter_4_2(img1);
-                cout << "Combined Frame Filter Applied Successfully!\n";
             }
             else if (filter == 5) {
                 int type;
