@@ -438,7 +438,7 @@ int main() {
             }
         }
         else if (savechoice == 3) {
-            cout << "Enter new image name to save (e.g., output.jpg):\n";
+            cout << "Enter new image name to save:\n";
             cin >> filename;
 
             if (img1.saveImage(filename)) {
