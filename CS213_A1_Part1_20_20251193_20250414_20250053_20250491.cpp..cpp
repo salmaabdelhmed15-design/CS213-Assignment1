@@ -1,3 +1,10 @@
+/*
+ * Ahmed Mohamed Saad Azzam    20250053   filter --> 1,5
+ * Amar Weal Ezzat             20250414   filter --> 2,6
+ * Karim Mohamed Kamel         20250491   filter --> 3,7
+ * Salma Abdelhameed ibrahim   20251193   filter --> 4,8
+   NUMsec 20
+*/
 #define _CRT_SECURE_NO_WARNINGS
 #include "image_Class.h"
 #include <bits/stdc++.h>
