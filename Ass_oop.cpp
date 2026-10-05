@@ -198,25 +198,22 @@ Image filter_8(Image& image) {
 }
 int main() {
     cin >> z;
-    if (z==0){
-        Image image;
-            image.loadNewImage("cry.jpg.jpg");
-            filter_4_2(image);
-            image.saveImage("cry.jpg.png");
-            return 0;
-    }else if (z==4) {
-        Image image;
-        image.loadNewImage("cry.jpg.jpg");
-        filter_4(image);
-        image.saveImage("cry.jpg.png");
-        return 0;
-    }else if (z==40) {
-        Image image;
-        image.loadNewImage("cry.jpg.jpg");
-        filter_4(image);
-        filter_4_2(image);
-        image.saveImage("cry.jpg.png");
-        return 0;
+    if (z==4) {
+        int choice;
+                cout << "1. Simple Frame\n";
+                cout << "2. Fancy Frame\n";
+                cout << "3. Both\n";
+                cout << "Enter choice: ";
+                cin >> choice;
+                if (choice == 1) {
+                    filter_4(img1);
+                }else if (choice == 2) {
+                    filter_4_2(img1);
+                }else {
+                    filter_4(img1);
+                    filter_4_2(img1);
+                }
+            }
     }
     else if (z==8) {
         Image image;
