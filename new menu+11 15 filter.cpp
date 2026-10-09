@@ -3,7 +3,7 @@
  * Ammar Weal Ezzat             20250414   filter --> 2,6
  * Karim Mohamed Kamel         20250491   filter --> 3,7
  * Salma Abdelhameed Ibrahim   20251193   filter --> 4,8
-   NUMsec 20
+   NUMsec 9,10
 */
 #define _CRT_SECURE_NO_WARNINGS
 #include "image_Class.h"
@@ -221,7 +221,57 @@ Image filter_8(Image& image) {
 	}
 	return result;
 }
+void filter_12(Image& image,int radius) {
+    int oldWidth = image.width;
+    int oldHeight = image.height;
+    vector<vector<long long>> perfixR(oldHeight+1, vector<long long>(oldWidth+1,0));
+    vector<vector<long long>> perfixG(oldHeight+1, vector<long long>(oldWidth+1,0));
+    vector<vector<long long>> perfixB(oldHeight+1, vector<long long>(oldWidth+1,0));
 
+    for (int y = 1; y <= oldHeight; y++) {
+        for (int x = 1; x <= oldWidth; x++) {
+            int r = image(x-1,y-1,0);
+            int g = image(x-1,y-1,1);
+            int b = image(x-1,y-1,2);
+            perfixR[y][x]= r + perfixR[y-1][x] + perfixR[y][x-1] - perfixR[y-1][x-1];
+            perfixG[y][x]= g + perfixG[y-1][x] + perfixG[y][x-1] - perfixG[y-1][x-1];
+            perfixB[y][x]= b + perfixB[y-1][x] + perfixB[y][x-1] - perfixB[y-1][x-1];
+        }
+    }
+    Image Blurred = image;
+    for (int y = 0; y < oldHeight; y++) {
+        for (int x = 0; x < oldWidth; x++) {
+            int x1 = max(0,x-radius);
+            int y1 = max(0,y-radius);
+            int x2 = min(oldWidth-1,x+radius);
+            int y2 = min(oldHeight-1,y+radius);
+            int px1 = x1; int py1 = y1;
+            int px2 = x2+1; int py2 = y2+1;
+            int count = (x2-x1+1)*(y2-y1+1);
+            long long sumR = perfixR[py2][px2]-perfixR[py1][px2]-perfixR[py2][px1]+perfixR[py1][px1];
+            long long sumG = perfixG[py2][px2]-perfixG[py1][px2]-perfixG[py2][px1]+perfixG[py1][px1];
+            long long sumB = perfixB[py2][px2]-perfixB[py1][px2]-perfixB[py2][px1]+perfixB[py1][px1];
+            Blurred(x,y,0)= sumR/count;
+            Blurred(x,y,1)= sumG/count;
+            Blurred(x,y,2)= sumB/count;
+        }
+    }
+    image = Blurred;
+}
+void filter_16(Image& image) {
+    for (int i = 0; i < image.width; i++) {
+        for (int j = 0; j < image.height; j++) {
+            unsigned int avg = 0;
+            for (int k = 0; k < 3; k++) {
+                avg += image(i,j,k);
+            }
+            avg = avg/3;
+            image(i,j,0) = 255;
+            image(i,j,1) = avg;
+            image(i,j,2) = avg;
+        }
+    }
+}
 int main() {
 	Image img1;
 	string filename;
@@ -471,8 +521,12 @@ int main() {
 				else {
 					cout << "Invalid dimensions!\n";
 				}
-				}
-			else if (filter == 15) {
+			}else if (filter == 12) {
+                int radius;
+                cout << "Enter Blur Level: ";
+                cin >> radius;
+                filter_12(img1, radius);
+			}else if (filter == 15) {
 				for (int i = 0; i < img1.width; ++i) {
 					for (int j = 0; j < img1.height; ++j) {
 						int r = img1(i, j, 0) * 1.1;
@@ -484,7 +538,8 @@ int main() {
 					}
 				}
 				cout << "Purple Tint Filter Applied Successfully!\n";
-}
+            }else if (filter == 16) {
+                filter_16(img1);}
 			else {
 				cout << "Filter under development or invalid choice!\n";
 			}
