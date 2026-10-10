@@ -549,7 +549,7 @@ int main() {
                 cout << "Enter Blur Level: ";
                 cin >> radius;
                 filter_12(img1, radius);
-			else if (filter == 14){
+			}else if (filter == 14){
 				Image image4("Cry.jpg");
                 for (int y = 0; y < image4.height; ++y){
                       if (y % 2 == 0) {
