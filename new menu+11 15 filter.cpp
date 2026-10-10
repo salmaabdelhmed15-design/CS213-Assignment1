@@ -499,6 +499,43 @@ int main() {
 				img1 = filter_8(img1);
 				cout << "Image Resized Successfully!\n";
 			}
+			else if (filter == 10){
+				Image image3("luffy.jpg");
+
+for(int i = 0 ; i < image3.width-1; ++i)
+ {
+    for(int j = 0 ; j < image3.height; ++j )
+    {
+        unsigned int avg = 0 ;
+        unsigned int avg_next = 0 ;
+        unsigned int diff = 0 ;
+        
+        for(int k = 0 ; k < image3.channels; ++k )
+        {
+            avg += image3(i,j,k);
+            avg_next += image3(i+1,j,k);
+        } 
+
+        avg = avg/3 ;
+        avg_next = avg_next/3 ;
+        diff = abs((int)avg_next - (int)avg) ;
+
+        if( diff >= 30)
+        {
+            diff = 0 ;
+        }
+        else
+        {
+            diff = 255 ;
+        }
+        for(int k =0 ; k < image3.channels ; ++k)
+        {
+            image3(i,j,k)= diff ;
+        }
+    }
+ } 
+
+			}
 			else if (filter == 11) {
 				int x, y, w, h;
 				cout << "Enter Start Point ";
@@ -526,6 +563,24 @@ int main() {
                 cout << "Enter Blur Level: ";
                 cin >> radius;
                 filter_12(img1, radius);
+			else if (filter == 14){
+				Image image4("Cry.jpg");
+
+for (int y = 0; y < image4.height; ++y)
+{
+    if (y % 2 == 0)
+    
+    {
+        for (int x = 0; x < image4.width; ++x)
+        {
+            for (int z = 0; z < image4.channels; ++z)
+            {
+                image4.setPixel(x, y, z, 0);
+            }
+        }
+    }
+}
+			}	
 			}else if (filter == 15) {
 				for (int i = 0; i < img1.width; ++i) {
 					for (int j = 0; j < img1.height; ++j) {
