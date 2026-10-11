@@ -1,5 +1,7 @@
+/*salma
+    */
 #include "image_Class.h"
-#include <iostream>
+#include <bits/stdc++.h>
 using namespace std;
 int z ;
 void lines(Image& image, int design) {
@@ -196,6 +198,50 @@ Image filter_8(Image& image) {
     }
     return result;
 }
+void filter_12(Image& image, int radius) {
+	int w = image.width;
+	int h = image.height;
+	Image result = image;
+	for (int c = 0; c < 3; c++) {
+		vector<vector<long long>> sum(h + 1, vector<long long>(w + 1, 0));
+		for (int y = 1; y <= h; y++) {
+			for (int x = 1; x <= w; x++) {
+				sum[y][x] = image(x - 1, y - 1, c)
+						  + sum[y - 1][x]
+						  + sum[y][x - 1]
+						  - sum[y - 1][x - 1];
+			}
+		}
+		for (int y = 0; y < h; y++) {
+			for (int x = 0; x < w; x++) {
+				int left   = max(0, x - radius);
+				int right  = min(w - 1, x + radius);
+				int top    = max(0, y - radius);
+				int bottom = min(h - 1, y + radius);
+				long long total = sum[bottom + 1][right + 1]
+								- sum[top][right + 1]
+								- sum[bottom + 1][left]
+								+ sum[top][left];
+				int count = (right - left + 1) * (bottom - top + 1);
+				result(x, y, c) = total / count;
+			}
+		}
+	}
+	image = result;}
+void filter_16(Image& image) {
+    for (int i = 0; i < image.width; i++) {
+        for (int j = 0; j < image.height; j++) {
+            unsigned int avg = 0;
+            for (int k = 0; k < 3; k++) {
+                avg += image(i,j,k);
+            }
+            avg = avg/3;
+            image(i,j,0) = 255;
+            image(i,j,1) = avg;
+            image(i,j,2) = avg;
+        }
+    }
+}
 int main() {
     cin >> z;
     if (z==4) {
@@ -221,5 +267,12 @@ int main() {
         Image resized = filter_8(image);
         resized.saveImage("Wano 2.jpg.png");
         return 0;
+    }else if (z==12){
+        int radius;
+				cout << "Enter Blur Level: ";
+				cin >> radius;
+				filter_12(img1, radius);
+    }else if(z==16){
+        filter_16(img1);
     }
 }
