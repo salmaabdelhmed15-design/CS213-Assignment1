@@ -691,8 +691,48 @@ int main() {
 				cout << "Purple Tint Filter Applied Successfully!\n";
 			}else if (filter == 16) {
 				filter_16(img1);
-				cout << "Infrared Photography Filter Successfully!\n";
+				cout << "Infrared Photography Filter Successfully!\n"; 
+				
 			}else if (filter == 17) {
+				Image image5("SKeLeton.jpg");
+ double angleDegrees = 40.0;
+ double angleRadians = angleDegrees * 3.14159265358979323846 / 180.0;
+ double tanVal = tan(angleRadians);
+
+ int width = image5.width;
+ int height = image5.height;
+ int channels = image5.channels;
+
+ int maxShift = abs(height * tanVal);
+ int newWidth = width + maxShift;
+
+ Image outputImage(newWidth, height);
+ outputImage.channels = channels;
+
+for (int i = 0; i < height; ++i) {
+    for (int j = 0; j < newWidth; ++j) {
+        for (int k = 0; k < channels; ++k) {
+            outputImage.setPixel(j, i, k, 255);
+        }
+    }
+}
+
+for (int i = 0; i < height; ++i) {
+    double shift = (height - 1 - i) * tanVal;
+    for (int j = 0; j < width; ++j) {
+        int newCol = j + round(shift);
+        if (newCol >= 0 && newCol < newWidth) {
+            for (int k = 0; k < channels; ++k) {
+                outputImage.setPixel(newCol, i, k, image5.getPixel(j, i, k));
+            }
+        }
+    }
+}
+
+				image5 = outputImage;
+				image5.saveImage("skewed_skeleton.png");
+			}
+			
 			}else if (filter == 18) {
 				int radius = 3;
 				filter_18(img1, radius);
