@@ -1,0 +1,104 @@
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include "Image_Class.h"
+
+using namespace std;
+
+// Resize Filter
+Image filter_8(Image& image, int newWidth, int newHeight)
+{
+    int oldWidth = image.width;
+    int oldHeight = image.height;
+
+    Image result(newWidth, newHeight);
+
+    double scale1 = (double)oldWidth / newWidth;
+    double scale2 = (double)oldHeight / newHeight;
+
+    for (int i = 0; i < newWidth; i++)
+    {
+        for (int j = 0; j < newHeight; j++)
+        {
+            int x = (int)(i * scale1);
+            int y = (int)(j * scale2);
+
+            for (int k = 0; k < 3; k++)
+            {
+                result.setPixel(i, j, k,
+                                image.getPixel(x, y, k));
+            }
+        }
+    }
+
+    return result;
+}
+
+
+// Merge Images Filter
+Image mergeImages(Image& img1, Image& img2)
+{
+    int width = img1.width;
+    int height = img1.height;
+
+    Image result(width, height);
+
+    for (int i = 0; i < width; i++)
+    {
+        for (int j = 0; j < height; j++)
+        {
+            for (int k = 0; k < 3; k++)
+            {
+                int pixel1 = img1.getPixel(i, j, k);
+                int pixel2 = img2.getPixel(i, j, k);
+
+                int average = (pixel1 + pixel2) / 2;
+
+                result.setPixel(i, j, k, average);
+            }
+        }
+    }
+
+    return result;
+}
+
+
+int main()
+{
+    Image img1, img2;
+
+    string path1, path2;
+
+    cout << "Enter first image path: ";
+    cin >> path1;
+
+    cout << "Enter second image path: ";
+    cin >> path2;
+
+    img1.loadNewImage(path1);
+    img2.loadNewImage(path2);
+
+
+    // Resize both images automatically if dimensions differ
+    if (img1.width != img2.width || img1.height != img2.height)
+    {
+        int newWidth = min(img1.width, img2.width);
+        int newHeight = min(img1.height, img2.height);
+
+        img1 = filter_8(img1, newWidth, newHeight);
+        img2 = filter_8(img2, newWidth, newHeight);
+    }
+
+
+    // Merge the images
+    Image result = mergeImages(img1, img2);
+
+
+    // Save the result
+    result.saveImage("merged_image.jpg");
+
+    cout << "\nImages merged successfully!\n";
+    cout << "Saved as merged_image.jpg\n";
+
+    return 0;
+}
